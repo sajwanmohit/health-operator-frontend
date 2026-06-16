@@ -4,6 +4,7 @@ import clusterReducer from './slices/clusterSlice';
 import scalingReducer from './slices/scalingSlice';
 import incidentsReducer from './slices/incidentsSlice';
 import websocketReducer from './slices/websocketSlice';
+import authReducer from './slices/authSlice';
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     scaling: scalingReducer,
     incidents: incidentsReducer,
     websocket: websocketReducer,
+    auth: authReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
