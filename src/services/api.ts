@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: '/api/v1',
+  baseURL: '/api',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -63,7 +63,7 @@ api.interceptors.response.use(
       }
 
       try {
-        const response = await axios.post('/api/v1/auth/refresh', { refreshToken });
+        const response = await axios.post('/api/auth/refresh', { refreshToken });
         const { accessToken, refreshToken: newRefreshToken } = response.data;
         localStorage.setItem('access_token', accessToken);
         localStorage.setItem('refresh_token', newRefreshToken);
@@ -87,35 +87,35 @@ api.interceptors.response.use(
 );
 
 export const clusterApi = {
-  list: () => api.get('/clusters'),
-  getHealth: (clusterId: string) => api.get(`/clusters/${clusterId}/health`),
-  getNodes: (clusterId: string) => api.get(`/clusters/${clusterId}/nodes`),
+  list: () => api.get('/v1/clusters'),
+  getHealth: (clusterId: string) => api.get(`/v1/clusters/${clusterId}/health`),
+  getNodes: (clusterId: string) => api.get(`/v1/clusters/${clusterId}/nodes`),
 };
 
 export const podApi = {
   list: (namespace?: string, status?: string, page?: number, size?: number) =>
-    api.get('/pods', {
+    api.get('/v1/pods', {
       params: { namespace: namespace || undefined, status: status || undefined, page, size },
     }),
-  get: (namespace: string, podName: string) => api.get(`/pods/${namespace}/${podName}`),
-  getHealth: (namespace: string, podName: string) => api.get(`/pods/${namespace}/${podName}/health`),
+  get: (namespace: string, podName: string) => api.get(`/v1/pods/${namespace}/${podName}`),
+  getHealth: (namespace: string, podName: string) => api.get(`/v1/pods/${namespace}/${podName}/health`),
   getMetrics: (namespace: string, podName: string, from?: string, to?: string) =>
-    api.get(`/pods/${namespace}/${podName}/metrics`, { params: { from, to } }),
+    api.get(`/v1/pods/${namespace}/${podName}/metrics`, { params: { from, to } }),
 };
 
 export const scalingApi = {
-  list: (page?: number, size?: number) => api.get('/scaling', { params: { page, size } }),
-  getStats: () => api.get('/scaling/stats'),
+  list: (page?: number, size?: number) => api.get('/v1/scaling', { params: { page, size } }),
+  getStats: () => api.get('/v1/scaling/stats'),
 };
 
 export const incidentApi = {
-  list: (namespace?: string) => api.get('/incidents', { params: { namespace } }),
-  get: (id: string) => api.get(`/incidents/${id}`),
-  getStats: () => api.get('/incidents/stats'),
+  list: (namespace?: string) => api.get('/v1/incidents', { params: { namespace } }),
+  get: (id: string) => api.get(`/v1/incidents/${id}`),
+  getStats: () => api.get('/v1/incidents/stats'),
 };
 
 export const healthApi = {
-  getClusterOverview: () => api.get('/health/cluster'),
+  getClusterOverview: () => api.get('/v1/clusters/default/health'),
 };
 
 export const adminApi = {
